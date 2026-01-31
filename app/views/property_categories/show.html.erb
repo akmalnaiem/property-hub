@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @property_category %>
+
+<div>
+  <%= link_to "Edit this property category", edit_property_category_path(@property_category) %> |
+  <%= link_to "Back to property categories", property_categories_path %>
+
+  <%= button_to "Destroy this property category", @property_category, method: :delete %>
+</div>

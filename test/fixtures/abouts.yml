@@ -1,0 +1,29 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  hero_title: MyString
+  hero_subtitle: MyText
+  properties_listed: 1
+  happy_customers: 1
+  cities_covered: 1
+  years_experience: 1
+  mission_title: MyString
+  mission_description: MyText
+  vision_title: MyString
+  vision_description: MyText
+  values_offer: MyText
+  values_why: MyText
+
+two:
+  hero_title: MyString
+  hero_subtitle: MyText
+  properties_listed: 1
+  happy_customers: 1
+  cities_covered: 1
+  years_experience: 1
+  mission_title: MyString
+  mission_description: MyText
+  vision_title: MyString
+  vision_description: MyText
+  values_offer: MyText
+  values_why: MyText

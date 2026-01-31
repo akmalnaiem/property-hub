@@ -1,0 +1,46 @@
+<%= form_with model: blog, local: true, class: "blog-form" do |f| %>
+  <div class="field">
+    <%= f.label :title %>
+    <%= f.text_field :title, placeholder: "Enter blog title" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :blog_category_id, "Category" %>
+    <%= f.select :blog_category_id, BlogCategory.all.collect { |c| [c.name, c.id] }, { prompt: "Select Category" } %>
+  </div>
+
+  <div class="field">
+    <%= f.label :content %>
+    <%= f.text_area :content, placeholder: "Write your blog content here..." %>
+  </div>
+
+  <div class="field">
+    <%= f.label :status %>
+    <%= f.select :status, Blog.statuses.keys, { prompt: "Select Status" } %>
+  </div>
+
+  <div class="field">
+    <%= f.label :published_at %>
+    <%= f.datetime_field :published_at %>
+  </div>
+
+  <div class="field">
+    <%= f.label :city %>
+    <%= f.text_field :city, placeholder: "Enter city" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :state %>
+    <%= f.text_field :state, placeholder: "Enter state" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :image, "Blog Image" %>
+    <%= f.file_field :image, accept: "image/*" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit blog.new_record? ? "Create Blog" : "Update Blog" %>
+    <%= link_to "Cancel", blogs_path, class: "cancel-link" %>
+  </div>
+<% end %>

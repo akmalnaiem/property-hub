@@ -1,0 +1,96 @@
+<%= render "shared/search" %>
+
+<div class="listing-wrapper">
+  <h1 class="listing-title">All Properties</h1>
+
+  <% if @properties.present? %>
+    <div class="listing-grid">
+      <% @properties.each do |property| %>
+
+        <div class="listing-card">
+
+          <!-- Image -->
+          <div class="listing-image">
+            <% if property.images.present? %>
+              <%= image_tag property.images.first, alt: property.title %>
+            <% else %>
+              <div class="listing-image-placeholder">
+                <i class="fas fa-image"></i>
+              </div>
+            <% end %>
+
+            <!-- RERA Badge -->
+            <div class="listing-rera-badge">
+              <i class="fas fa-check-circle"></i>
+              RERA VERIFIED
+            </div>
+            
+            <!-- Category & Sale Status -->
+            <div class="listing-badges-left">
+              <% if property.property_category.present? %>
+                <div class="listing-category-badge">
+                  <%= property.property_category.name %>
+                </div>
+              <% end %>
+
+              <% if property.sale_status.present? %>
+                <div class="listing-sale-status <%= property.sale_status.parameterize %>">
+                  <%= property.sale_status.humanize %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <!-- Body -->
+          <div class="listing-body">
+            <h3 class="listing-property-title"><%= property.title %></h3>
+
+            <div class="listing-location">
+              <i class="fas fa-map-marker-alt"></i>
+              <%= property.location %>
+            </div>
+
+            <p class="listing-description">
+              <%= truncate(property.description, length: 80) %>
+            </p>
+
+            <!-- Footer -->
+            <div class="listing-footer">
+              <div class="listing-price">
+                ₹ <%= number_with_delimiter(property.price) %>
+              </div>
+
+              <div class="listing-actions">
+                <%= link_to "https://wa.me/?text=#{CGI.escape(property_url(property))}",
+                            target: "_blank",
+                            class: "listing-share-btn",
+                            title: "Share on WhatsApp" do %>
+                  <i class="fab fa-whatsapp"></i>
+                <% end %>
+
+                <%= link_to download_csv_property_path(property), class: "listing-download-btn" do %>
+                    <i class="fas fa-download"></i>
+                <% end %>
+
+                <%= link_to property_path(property), class: "listing-view-btn" do %>
+                  <span>View</span>
+                  <i class="fas fa-arrow-right"></i>
+                <% end %>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="pagination-wrapper">
+        <%= paginate @properties %>
+    </div>
+  <% else %>
+    <div class="listing-empty">
+      <h2>No properties available</h2>
+      <p>Check back soon for new property listings!</p>
+    </div>
+  <% end %>
+</div>

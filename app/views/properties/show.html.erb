@@ -1,0 +1,236 @@
+<div class="property-show-wrapper">
+
+  <!-- HEADER -->
+  <section class="property-header">
+    <!-- Title and Location Section -->
+    <div class="property-header-left">
+      <h1><%= @property.title %></h1>
+      <p class="property-location">
+        <%= @property.location %>, <%= @property.city %>, <%= @property.state %>
+      </p>
+    </div>
+
+    <!-- Property Images Section -->
+    <div class="property-images-wrapper">
+      <div class="property-gallery-wrapper">
+        <% if @property.images.attached? %>
+          <div class="property-gallery">
+            <!-- MAIN IMAGE -->
+            <div class="main-image">
+              <%= image_tag @property.images.first, id: "mainPropertyImage", alt: @property.title %>
+            </div>
+
+            <!-- THUMBNAILS -->
+            <div class="thumbnail-row">
+              <% @property.images.each_with_index do |img, index| %>
+                <%= image_tag img, 
+                    class: "thumbnail #{index == 0 ? 'active' : ''}", 
+                    data: { full: url_for(img) },
+                    alt: "#{@property.title} - Image #{index + 1}",
+                    role: "button",
+                    tabindex: "0",
+                    aria_label: "View image #{index + 1}" %>
+              <% end %>
+            </div>
+          </div>
+        <% else %>
+          <!-- Placeholder when no images -->
+          <div class="property-gallery property-gallery-placeholder">
+            <div class="main-image">
+              <div class="image-placeholder">
+                <i class="fas fa-image"></i>
+                <span>No Image Available</span>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- CONTACT INFO (Fixed Position - Right Sidebar) -->
+    <div class="property-header-right">
+      <div class="contact-info card">
+        <h3>Contact</h3>
+        <p><strong>Name:</strong> <%= @property.user.name %></p>
+        <p><strong>Email:</strong> <%= @property.user.email %></p>
+        <p><strong>Phone:</strong> <%= @property.user.phone_number %></p>
+        <%= link_to "Contact Now", "#", class: "btn-primary" %>
+      </div>
+    </div>
+  </section>
+
+  <!-- Actions and Price Section (Centered Below Images, Above Overview) -->
+  <div class="property-actions-price-section">
+    <div class="property-actions">
+      <div class="property-actions-group">
+        <% if user_signed_in? && current_user.admin? %>
+          <%= button_to "Edit", edit_property_path(@property), method: :get, class: "btn pill-btn" %>
+          <%= button_to "Delete", property_path(@property),
+              method: :delete,
+              data: { turbo_confirm: "Are you sure?" },
+              class: "btn pill-btn danger" %>
+        <% end %>
+
+        <%= button_to "Share",
+            "https://wa.me/?text=#{CGI.escape("Check this property: #{property_url(@property)}")}", method: :get, form: { target: "_blank" }, class: "btn pill-btn" %>
+      </div>
+
+      <!-- Property Price Section -->
+      <div class="property-price-box">
+        <span class="price">
+          ₹ <%= number_with_delimiter(@property.price) %>
+        </span>
+        <span class="btn pill-btn small">
+          <%= @property.status.titleize %>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="property-content">
+    <!-- LEFT SIDE -->
+    <div class="property-main">
+      <!-- OVERVIEW CARD -->
+      <div class="card">
+        <h2>Overview</h2>
+        <p><%= @property.description %></p>
+      </div>
+      <!-- DETAILS GRID -->
+      <div class="card">
+        <h2>Property Details</h2>
+
+        <div class="details-grid">
+          <div class="detail-item">
+            <span>Property Type</span>
+            <strong><%= @property.property_type&.name %></strong>
+          </div>
+
+          <div class="detail-item">
+            <span>Area</span>
+            <strong><%= @property.area_sqft %> sq.ft</strong>
+          </div>
+
+          <div class="detail-item">
+            <span>Bedrooms</span>
+            <strong><%= @property.bedrooms %></strong>
+          </div>
+
+          <div class="detail-item">
+            <span>Bathrooms</span>
+            <strong><%= @property.bathrooms %></strong>
+          </div>
+
+          <div class="detail-item">
+            <span>Furnished</span>
+            <strong><%= @property.furnished ? "Yes" : "No" %></strong>
+          </div>
+
+          <div class="detail-item">
+            <span>Published</span>
+            <strong><%= @property.published ? "Yes" : "No" %></strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- AMENITIES (PLACEHOLDER) -->
+        <div class="card">
+            <h2>Amenities</h2>
+            <div class="amenities-grid">
+                <% @property.features.each do |feature| %>
+                    <div class="amenity-item">
+                        <i class="<%= feature.icon %>"></i>
+                        <span><%= feature.name %></span>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <aside class="property-sidebar">
+      <div class="card highlight">
+        <h3>Quick Info</h3>
+
+        <ul class="quick-info">
+          <li>
+            <span>City</span>
+            <strong><%= @property.city %></strong>
+          </li>
+          <li>
+            <span>State</span>
+            <strong><%= @property.state %></strong>
+          </li>
+          <li>
+            <span>Listed On</span>
+            <strong><%= @property.created_at.strftime("%d %b %Y") %></strong>
+          </li>
+        </ul>
+      </div>
+
+    </aside>
+
+  </div>
+
+</div>
+
+<script> 
+  document.addEventListener('DOMContentLoaded', function() {
+    initPropertyGallery();
+  });
+
+  // Re-initialize on Turbo navigation (for Hotwire/Turbo)
+  document.addEventListener('turbo:load', function() {
+    initPropertyGallery();
+  });
+
+  document.addEventListener('turbo:render', function() {
+    initPropertyGallery();
+  });
+
+  function initPropertyGallery() {
+    const mainImage = document.getElementById('mainPropertyImage');
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    
+    if (!mainImage || thumbnails.length === 0) return;
+
+    thumbnails.forEach(function(thumbnail) {
+      // Handle click events
+      thumbnail.addEventListener('click', function() {
+        switchMainImage(this, mainImage, thumbnails);
+      });
+
+      // Handle keyboard events for accessibility
+      thumbnail.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          switchMainImage(this, mainImage, thumbnails);
+        }
+      });
+    });
+  }
+
+  function switchMainImage(clickedThumbnail, mainImage, allThumbnails) {
+    const newImageSrc = clickedThumbnail.dataset.full;
+    
+    if (!newImageSrc) return;
+
+    // Update main image with smooth transition
+    mainImage.style.opacity = '0';
+    
+    setTimeout(function() {
+      mainImage.src = newImageSrc;
+      mainImage.alt = clickedThumbnail.alt;
+      mainImage.style.opacity = '1';
+    }, 150);
+
+    // Remove active class from all thumbnails
+    allThumbnails.forEach(function(thumb) {
+      thumb.classList.remove('active');
+    });
+
+    // Add active class to clicked thumbnail
+    clickedThumbnail.classList.add('active');
+  }
+</script>
+

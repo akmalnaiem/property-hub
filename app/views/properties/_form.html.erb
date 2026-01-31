@@ -1,0 +1,230 @@
+<div class="form-page">
+  <div class="form-card">
+    <h1>
+      <%= property.persisted? ? "Edit Property" : "New Property" %>
+    </h1>
+    <!-- <p class="subtitle">Add a new property listing</p> -->
+
+    <%= form_with model: property, local: true, class: "styled-form" do |f| %>
+
+      <% if @property.errors.any? %>
+        <div class="form-errors">
+          <ul>
+            <% @property.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.label :title %>
+        <%= f.text_field :title, placeholder: "Property title" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :description %>
+        <%= f.text_area :description, placeholder: "Property description" %>
+      </div>
+
+      <% if property.persisted? %>
+        <div class="form-group">
+          <%= f.label :sale_status %>
+          <%= f.select :sale_status, Property.sale_statuses.keys %>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.label :price %>
+        <%= f.number_field :price, placeholder: "Price" %>
+      </div>
+
+      <!-- Property Category Section -->
+      <div class="form-group">
+        <%= f.label :property_category_id, "Property Category" %>
+        <%= f.collection_select :property_category_id, 
+            PropertyCategory.all.order(:name), 
+            :id, 
+            :name, 
+            { prompt: "Select property category", selected: f.object.property_category_id },
+            { id: "property_category_select", class: "form-select" } %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :property_type_id, "Property Type" %>
+        <% 
+          property_types = if f.object.property_category
+            f.object.property_category.property_types.order(:name)
+          else
+            []
+          end
+        %>
+        <%= f.collection_select :property_type_id, 
+            property_types,
+            :id, 
+            :name, 
+            { prompt: "Select property type", selected: f.object.property_type_id },
+            { id: "property_type_select", class: "form-select" } %>
+      </div>
+      
+        <div class="form-group hidden" id="bhk-wrapper">
+          <label>BHK Configuration</label>
+          <div class="bhk-options">
+            <% [1,2,3,4,5].each do |bhk| %>
+              <label class="bhk-pill">
+                <%= f.radio_button :bedrooms, bhk %>
+                <%= bhk %> BHK
+              </label>
+            <% end %>
+          </div>
+        </div>
+
+      <!-- Property Feature Section -->
+      <div class="form-group">
+        <%= f.label :feature_ids, "Select Features" %>
+        <%= f.collection_select(
+            :feature_ids,
+            Feature.order(:name),
+            :id,
+            :name,
+            {},
+            {
+              multiple: true,
+              class: "form-select",
+              data: { controller: "multi-select" }
+            }
+          ) %>
+      </div>
+
+
+      <div class="form-row">
+        <div class="form-group">
+          <%= f.label :area_sqft %>
+          <%= f.number_field :area_sqft, placeholder: "Sqft" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :bathrooms %>
+          <%= f.number_field :bathrooms %>
+        </div>
+      </div>
+
+      <div class="form-row check-row">
+        <label><%= f.check_box :published %> Published</label>
+        <label><%= f.check_box :furnished %> Furnished</label>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :status %>
+        <%= f.select :status, Property.statuses.keys %>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <%= f.label :state %>
+          <%= f.text_field :state %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :city %>
+          <%= f.text_field :city %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :location %>
+        <%= f.text_field :location, placeholder: "Full address or landmark" %>
+      </div>
+
+      <!-- EXISTING IMAGES (only for edit) -->
+      <% if property.persisted? && property.images.attached? %>
+        <h3>Existing Images</h3>
+        <div class="existing-images">
+          <% property.images.each do |image| %>
+            <div class="image-preview">
+              <%= image_tag image, width: 150 %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+
+      <!-- File Input -->
+      <div class="form-group">
+        <%= f.label :images %>
+        <%= f.file_field :images, multiple: true %>
+      </div>
+
+      <div class="form-actions">
+        <%= f.submit class: "btn-primary" %>
+      </div>
+
+    <% end %>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const categorySelect = document.getElementById('property_category_select');
+    const typeSelect = document.getElementById('property_type_select');
+    
+    if (categorySelect && typeSelect) {
+      // Store initial property type ID if editing
+      const initialTypeId = typeSelect.value;
+      let shouldRestoreType = false;
+      
+      categorySelect.addEventListener('change', function() {
+        const categoryId = this.value;
+        
+        // Clear and disable type select
+        typeSelect.innerHTML = '<option value="">Select property type</option>';
+        typeSelect.disabled = true;
+        
+        if (categoryId) {
+          // Fetch property types for selected category
+          fetch(`/property_types/by_category?category_id=${categoryId}`, {
+            headers: {
+              'Accept': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            typeSelect.innerHTML = '<option value="">Select property type</option>';
+            data.forEach(function(type) {
+              const option = document.createElement('option');
+              option.value = type.id;
+              option.textContent = type.name;
+              typeSelect.appendChild(option);
+            });
+            typeSelect.disabled = false;
+            
+            // Restore initial selection if it exists and is in the new list
+            if (initialTypeId && shouldRestoreType) {
+              const optionExists = Array.from(typeSelect.options).some(opt => opt.value === initialTypeId);
+              if (optionExists) {
+                typeSelect.value = initialTypeId;
+              }
+            }
+            shouldRestoreType = false;
+          })
+          .catch(error => {
+            console.error('Error fetching property types:', error);
+            typeSelect.disabled = false;
+          });
+        } else {
+          typeSelect.disabled = false;
+        }
+      });
+      
+      // Trigger change if category is already selected (for edit form)
+      if (categorySelect.value) {
+        if (initialTypeId) {
+          shouldRestoreType = true;
+        }
+        categorySelect.dispatchEvent(new Event('change'));
+      }
+    }
+  });
+</script>
+

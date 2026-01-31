@@ -1,0 +1,162 @@
+<!-- Search Section -->
+ <div class="search-section">
+   <%= form_tag (params[:controller] == "home" ? root_path : properties_path), method: :get, class: "search-form" do %>
+   <div class="search-container">
+     <!-- By Location Dropdown -->
+     <div class="search-field-wrapper">
+       <%= select_tag :city,
+       options_for_select([
+        ['By Location', ''],
+        ['Nagpur', 'Nagpur'],
+        ['Kamptee', 'Kamptee'],
+        ['Nashik', 'Nashik'],
+        ['Mumbai', 'Mumbai']
+      ], params[:city]),
+      class: "search-field search-dropdown" %>
+      <i class="fas fa-chevron-down search-chevron"></i>
+    </div>
+
+    <!-- Search Input with Icon -->
+    <div class="search-field-wrapper search-input-wrapper">
+      <i class="fas fa-map-marker-alt search-icon"></i>
+      <%= text_field_tag :location,
+      params[:location],
+      placeholder: "Search",
+      class: "search-field search-input" %>
+    </div>
+
+    <div class="search-field-wrapper property-type-wrapper">
+  <div class="property-type-dropdown">
+    <input type="hidden" name="property_category_id" id="search_property_category_id" value="<%= params[:property_category_id] %>">
+    <input type="hidden" name="property_type_id" id="search_property_type_id" value="<%= params[:property_type_id] %>">
+    <div class="property-type-display search-field" id="search-property-type-display">
+      <span class="property-type-text">Property Type</span>
+      <i class="fas fa-ellipsis-v search-menu-icon"></i>
+    </div>
+    <div class="property-type-menu" id="search-property-type-menu">
+      <% PropertyCategory.all.order(:name).each do |category| %>
+        <div class="property-category-section" data-category-id="<%= category.id %>">
+          <div class="property-category-header" data-category="<%= category.name.downcase %>">
+            <span class="category-name"><%= category.name %></span>
+            <i class="fas fa-chevron-down category-chevron"></i>
+          </div>
+          <div class="property-type-list" style="display: none;">
+            <% category.property_types.order(:name).each do |type| %>
+              <div class="property-type-item" data-type-id="<%= type.id %>" data-type-name="<%= type.name.downcase %>">
+                <div class="property-type-label">
+                  <span><%= type.name %></span>
+                  <% if ['apartment', 'villa'].include?(type.name.downcase) %>
+                    <i class="fas fa-chevron-right type-chevron"></i>
+                  <% end %>
+                </div>
+                <% if ['apartment', 'villa'].include?(type.name.downcase) %>
+                  <div class="bhk-options-list" style="display: none;">
+                    <% [1, 2, 3, 4, 5].each do |bhk| %>
+                      <label class="bhk-checkbox-label">
+                        <input type="checkbox" name="bhk[]" value="<%= bhk %>" class="bhk-checkbox" data-bhk="<%= bhk %>">
+                        <span><%= bhk %> BHK</span>
+                      </label>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+   <!-- Price Dropdown -->
+   <div class="search-field-wrapper">
+     <%= select_tag :price_range,
+     options_for_select([
+      ['Price', ''],
+      ['Under ₹10 Lakhs', '0-1000000'],
+      ['₹10 Lakhs - ₹25 Lakhs', '1000000-2500000'],
+      ['₹25 Lakhs - ₹50 Lakhs', '2500000-5000000'],
+      ['₹50 Lakhs - ₹1 Crore', '5000000-10000000'],
+      ['Above ₹1 Crore', '10000000-999999999']
+    ], params[:price_range]),
+    class: "search-field search-dropdown" %>
+    <i class="fas fa-chevron-down search-chevron"></i>
+  </div>
+
+  <!-- Search Button -->
+  <%= submit_tag "Search", class: "search-submit-button" %>
+</div>
+<% end %>
+</div>
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', initSearchPropertyTypeDropdown);
+document.addEventListener('turbo:load', initSearchPropertyTypeDropdown);
+document.addEventListener('turbo:render', initSearchPropertyTypeDropdown);
+
+function initSearchPropertyTypeDropdown() {
+  const dropdown = document.querySelector('.property-type-dropdown');
+  if (!dropdown) return;
+  const display = document.getElementById('search-property-type-display');
+  const menu = document.getElementById('search-property-type-menu');
+  const categoryInput = document.getElementById('search_property_category_id');
+  const typeInput = document.getElementById('search_property_type_id');
+
+  // Toggle menu
+  if (display) display.onclick = e => { e.stopPropagation(); dropdown.classList.toggle('active'); };
+  document.addEventListener('click', e => { if (!dropdown.contains(e.target)) dropdown.classList.remove('active'); });
+
+  // Category expand/collapse
+  menu.querySelectorAll('.property-category-header').forEach(header => {
+    header.onclick = function(e) {
+      e.stopPropagation();
+      let typeList = this.parentNode.querySelector('.property-type-list');
+      if (!typeList) return;
+      let isOpen = header.classList.contains('active');
+      menu.querySelectorAll('.property-category-header').forEach(h => h.classList.remove('active'));
+      menu.querySelectorAll('.property-type-list').forEach(l => l.style.display='none');
+      if (!isOpen) { header.classList.add('active'); typeList.style.display='block'; }
+    };
+  });
+
+  // Property type + BHK select
+  menu.querySelectorAll('.property-type-label').forEach(label => {
+    label.onclick = function(e) {
+      e.stopPropagation();
+      let typeItem = this.parentNode;
+      let typeId = typeItem.dataset.typeId;
+      let typeName = typeItem.dataset.typeName;
+      let bhkList = typeItem.querySelector('.bhk-options-list');
+      let categorySection = typeItem.closest('.property-category-section');
+      let categoryId = categorySection.dataset.categoryId;
+      if (bhkList) {
+        let isActive = typeItem.classList.contains('active');
+        menu.querySelectorAll('.property-type-item').forEach(it => { if (it !== typeItem) { it.classList.remove('active'); let b=it.querySelector('.bhk-options-list'); if(b) b.style.display='none'; } });
+        if (!isActive) { typeItem.classList.add('active'); bhkList.style.display='grid'; }
+        else { typeItem.classList.remove('active'); bhkList.style.display='none'; }
+      } else {
+        categoryInput.value = categoryId;
+        typeInput.value = typeId;
+        // Uncheck BHKs
+        menu.querySelectorAll('.bhk-checkbox').forEach(cb => cb.checked = false);
+        dropdown.classList.remove('active');
+        // Update summary display here if you want
+      }
+    };
+  });
+  // BHK change
+  menu.querySelectorAll('.bhk-checkbox').forEach(cb => {
+    cb.onchange = function() {
+      let typeItem = cb.closest('.property-type-item');
+      let categorySection = cb.closest('.property-category-section');
+      categoryInput.value = categorySection.dataset.categoryId;
+      typeInput.value = typeItem.dataset.typeId;
+      // Optionally display summary (updatePropertyDropdownDisplay etc)
+    };
+  });
+}
+</script>

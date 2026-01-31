@@ -1,0 +1,404 @@
+/* Authentication Pages Styles - Sign In & Sign Up */
+
+/* Auth Container */
+.auth-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 60px);
+  padding: 2rem 1rem;
+  background: #f5f5f5;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.03) 0%, transparent 70%);
+  animation: pulse 15s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.5;
+  }
+}
+
+/* Auth Card */
+.auth-card {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e0e0e0;
+  padding: 3rem;
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+  z-index: 1;
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Auth Header */
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #505081;
+  margin: 0 0 0.5rem 0;
+}
+
+.auth-header p {
+  color: #666;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* Form Styles */
+.auth-form {
+  width: 100%;
+}
+
+.field {
+  margin-bottom: 1.5rem;
+}
+
+.field label {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="password"],
+.field input[type="tel"],
+.field select {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #f9f9f9;
+  box-sizing: border-box;
+}
+
+.field input[type="text"]:focus,
+.field input[type="email"]:focus,
+.field input[type="password"]:focus,
+.field input[type="tel"]:focus,
+.field select:focus {
+  outline: none;
+  border-color: #505081;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(80, 80, 129, 0.1);
+}
+
+.field input[type="text"]:hover,
+.field input[type="email"]:hover,
+.field input[type="password"]:hover,
+.field input[type="tel"]:hover,
+.field select:hover {
+  border-color: #ccc;
+}
+
+.field em {
+  font-size: 0.85rem;
+  color: #888;
+  font-style: normal;
+}
+
+/* Checkbox Field */
+.field input[type="checkbox"] {
+  width: auto;
+  margin-right: 0.5rem;
+  cursor: pointer;
+}
+
+.field label[for*="remember_me"] {
+  display: inline;
+  font-weight: 400;
+  cursor: pointer;
+  color: #666;
+}
+
+/* Submit Button */
+.actions {
+  margin-top: 2rem;
+}
+
+.actions input[type="submit"],
+.actions button[type="submit"] {
+  width: 100%;
+  padding: 1rem;
+  background: #505081;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(80, 80, 129, 0.2);
+}
+
+.actions input[type="submit"]:hover,
+.actions button[type="submit"]:hover {
+  background: #272757;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(80, 80, 129, 0.3);
+}
+
+.actions input[type="submit"]:active,
+.actions button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+/* Links */
+.auth-links {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.auth-links a {
+  color: #505081;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.auth-links a:hover {
+  color: #272757;
+  text-decoration: underline;
+}
+
+.auth-links p {
+  color: #666;
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+/* Error Messages */
+#error_explanation {
+  background-color: #f5f5f5;
+  border: 2px solid #505081;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  color: #505081;
+}
+
+#error_explanation h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  color: #505081;
+}
+
+#error_explanation ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+#error_explanation li {
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+}
+
+/* Devise Shared Links */
+.devise-links {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.devise-links a {
+  color: #505081;
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-block;
+  margin: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.devise-links a:hover {
+  color: #000000;
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .auth-container {
+    padding: 1rem;
+    min-height: calc(100vh - 60px);
+  }
+
+  .auth-card {
+    padding: 2rem 1.5rem;
+    border-radius: 15px;
+  }
+
+  .auth-header h2 {
+    font-size: 1.75rem;
+  }
+
+  .field {
+    margin-bottom: 1.25rem;
+  }
+
+  .field input[type="text"],
+  .field input[type="email"],
+  .field input[type="password"],
+  .field input[type="tel"],
+  .field select {
+    padding: 0.75rem;
+    font-size: 0.95rem;
+  }
+
+  .actions input[type="submit"],
+  .actions button[type="submit"] {
+    padding: 0.875rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-container {
+    padding: 0.75rem;
+  }
+
+  .auth-card {
+    padding: 1.5rem 1rem;
+    border-radius: 12px;
+  }
+
+  .auth-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .auth-header p {
+    font-size: 0.9rem;
+  }
+
+  .field {
+    margin-bottom: 1rem;
+  }
+
+  .field label {
+    font-size: 0.85rem;
+  }
+
+  .field input[type="text"],
+  .field input[type="email"],
+  .field input[type="password"],
+  .field input[type="tel"],
+  .field select {
+    padding: 0.625rem 0.875rem;
+    font-size: 0.9rem;
+  }
+
+  .actions input[type="submit"],
+  .actions button[type="submit"] {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .auth-links {
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+
+  .auth-links p {
+    font-size: 0.85rem;
+  }
+}
+
+/* Extra Small Devices */
+@media (max-width: 360px) {
+  .auth-card {
+    padding: 1.25rem 0.75rem;
+  }
+
+  .auth-header h2 {
+    font-size: 1.25rem;
+  }
+
+  .field input[type="text"],
+  .field input[type="email"],
+  .field input[type="password"],
+  .field input[type="tel"],
+  .field select {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Tablet Portrait */
+@media (min-width: 481px) and (max-width: 768px) {
+  .auth-card {
+    max-width: 400px;
+  }
+}
+
+/* Large Screens */
+@media (min-width: 1200px) {
+  .auth-card {
+    max-width: 500px;
+    padding: 3.5rem;
+  }
+
+  .auth-header h2 {
+    font-size: 2.25rem;
+  }
+}
+
+/* Additional styling for inline text */
+.auth-card > p,
+.auth-card > div:not(.field):not(.actions):not(.auth-header):not(.auth-links):not(.devise-links) {
+  text-align: center;
+  color: #666;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+
+.auth-card > p a,
+.auth-card > div a {
+  color: #505081;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-card > p a:hover,
+.auth-card > div a:hover {
+  color: #000000;
+  text-decoration: underline;
+}
+

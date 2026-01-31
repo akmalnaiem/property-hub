@@ -1,0 +1,43 @@
+<!-- ===== Home Edit Hero =====
+<section class="homeedit-hero">
+  <div class="homeedit-hero-content">
+    <h1 class="homeedit-hero-title">Edit Home Page</h1>
+    <p class="homeedit-hero-subtitle">
+      Update hero content and banner image displayed on the website
+    </p>
+  </div>
+</section> -->
+
+<!-- ===== Main Form Section ===== -->
+<section class="homeedit-main">
+  <div class="homeedit-container">
+    <div class="homeedit-card">
+
+      <div class="homeedit-form-header">
+        <h2>Home Page Settings</h2>
+        <p>Manage hero title, subtitle and image</p>
+      </div>
+
+      <%= form_with model: @home, url: home_path, method: :patch, local: true, multipart: true, class: "homeedit-form" do |f| %>
+
+        <div class="homeedit-field">
+          <%= f.label :hero_title %>
+          <%= f.text_field :hero_title, placeholder: "Enter hero title" %>
+        </div>
+
+        <div class="homeedit-field">
+          <%= f.label :hero_subtitle %>
+          <%= f.text_area :hero_subtitle, rows: 4, placeholder: "Enter hero subtitle" %>
+        </div>
+
+        <div class="homeedit-field">
+          <%= f.label :hero_image %>
+          <%= f.file_field :hero_image %>
+        </div>
+
+        <%= f.submit "Update Home Page", class: "homeedit-submit-btn" %>
+
+      <% end %>
+    </div>
+  </div>
+</section>

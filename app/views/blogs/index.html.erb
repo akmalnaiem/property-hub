@@ -1,0 +1,84 @@
+<!-- Blog Hero Section -->
+<div class="blog-hero">
+  <div class="blog-hero-overlay"></div>
+  <div class="blog-hero-content animate-fade-in">
+    <h1 class="blog-hero-title">Our Blog</h1>
+    <p class="blog-hero-subtitle">Stay updated with the latest insights, trends, and news in real estate</p>
+  </div>
+</div>
+
+<!-- Blog Filter Section -->
+<div class="blog-filter-section">
+  <div class="blog-filter-container">
+    <%= form_with url: blogs_path, method: :get, local: true, class: "blog-filter-form" do |f| %>
+      <div class="filter-wrapper">
+        <i class="fas fa-filter filter-icon"></i>
+        <%= select_tag :category_id, 
+            options_from_collection_for_select(
+                @categories,
+                :id,
+                :name,
+                params[:category_id]
+            ), 
+            prompt: "All Categories",
+            class: "blog-filter-select" %>
+        <%= submit_tag "Filter", class: "blog-filter-submit ripple-effect" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<!-- Blog Content Section -->
+<div class="blogs-container">
+  <% if @blogs.present? %>
+    <div class="blogs-grid">
+      <% @blogs.each_with_index do |blog, index| %>
+        <div class="blog-card animate-on-scroll" data-card-index="<%= index %>">
+          <div class="blog-card-image-wrapper">
+            <% if blog.image.present? %>
+              <%= image_tag blog.image, alt: blog.title, class: "blog-card-image" %>
+            <% else %>
+              <div class="blog-card-image-placeholder">
+                <i class="fas fa-image"></i>
+              </div>
+            <% end %>
+            <div class="blog-card-category">
+              <%= blog.blog_category.name %>
+            </div>
+            <div class="blog-card-overlay"></div>
+          </div>
+          <div class="blog-card-content">
+            <div class="blog-card-meta">
+              <div class="blog-card-date">
+                <i class="far fa-calendar"></i>
+                <span><%= blog.published_at&.strftime("%B %d, %Y") || "Not published" %></span>
+              </div>
+              <div class="blog-card-location">
+                <i class="fas fa-map-marker-alt"></i>
+                <span><%= blog.city %>, <%= blog.state %></span>
+              </div>
+            </div>
+            <h2 class="blog-card-title">
+              <%= link_to blog.title, blog_path(blog) %>
+            </h2>
+            <p class="blog-card-excerpt">
+              <%= truncate(strip_tags(blog.content), length: 120) %>
+            </p>
+            <div class="blog-card-footer">
+              <%= link_to "Read More", blog_path(blog), class: "blog-read-more" %>
+              <i class="fas fa-arrow-right read-more-icon"></i>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="blogs-empty animate-fade-in">
+      <div class="empty-state-icon">
+        <i class="fas fa-blog"></i>
+      </div>
+      <h2>No Blogs Available</h2>
+      <p>Check back soon for new blog posts!</p>
+    </div>
+  <% end %>
+</div>

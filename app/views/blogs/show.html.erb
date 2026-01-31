@@ -1,0 +1,51 @@
+<!-- Blog Show Hero -->
+<div class="blog-show-hero">
+  <div class="blog-show-hero-overlay"></div>
+  <div class="blog-show-hero-content animate-fade-in">
+    <div class="blog-show-breadcrumb">
+      <%= link_to "Home", root_path, class: "breadcrumb-link" %>
+      <i class="fas fa-chevron-right breadcrumb-separator"></i>
+      <%= link_to "Blogs", blogs_path, class: "breadcrumb-link" %>
+      <i class="fas fa-chevron-right breadcrumb-separator"></i>
+      <span class="breadcrumb-current"><%= truncate(@blog.title, length: 30) %></span>
+    </div>
+    <h1 class="blog-show-title"><%= @blog.title %></h1>
+    <div class="blog-show-meta">
+      <div class="blog-show-meta-item">
+        <i class="far fa-calendar"></i>
+        <span><%= @blog.published_at&.strftime("%B %d, %Y") || "Not published" %></span>
+      </div>
+      <div class="blog-show-meta-item">
+        <i class="fas fa-map-marker-alt"></i>
+        <span><%= @blog.city %>, <%= @blog.state %></span>
+      </div>
+      <div class="blog-show-meta-item">
+        <i class="fas fa-tag"></i>
+        <span><%= @blog.blog_category.name %></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Blog Show Content -->
+<div class="blog-show-container">
+  <% if @blog.image.present? %>
+    <div class="blog-show-image-wrapper animate-on-scroll">
+      <%= image_tag @blog.image, alt: @blog.title, class: "blog-show-image" %>
+    </div>
+  <% end %>
+
+  <div class="blog-show-content animate-on-scroll">
+    <div class="blog-content-text">
+      <%= simple_format(@blog.content) %>
+    </div>
+  </div>
+
+  <!-- Back to Blogs Button -->
+  <div class="blog-show-actions animate-on-scroll">
+    <%= link_to blogs_path, class: "blog-back-button ripple-effect" do %>
+      <i class="fas fa-arrow-left"></i>
+      <span>Back to Blogs</span>
+    <% end %>
+  </div>
+</div>

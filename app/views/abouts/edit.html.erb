@@ -1,0 +1,142 @@
+<div class="form-page">
+  <div class="form-card">
+
+    <h1>Edit About Page</h1>
+    <p class="subtitle">Manage hero, mission, vision & values content</p>
+
+    <%= form_with model: @about, url: about_path, method: :patch, local: true, multipart: true, class: "styled-form" do |f| %>
+
+      <!-- HERO SECTION -->
+      <h3>Hero Section</h3>
+
+      <div class="form-group">
+        <%= f.label :hero_title %>
+        <%= f.text_field :hero_title %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :hero_subtitle %>
+        <%= f.text_area :hero_subtitle, rows: 4 %>
+      </div>
+
+      <hr>
+
+      <!-- STATS SECTION -->
+      <h3>Stats</h3>
+
+      <div class="form-row">
+        <div class="form-group">
+          <%= f.label :properties_listed %>
+          <%= f.number_field :properties_listed %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :happy_customers %>
+          <%= f.number_field :happy_customers %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :cities_covered %>
+          <%= f.number_field :cities_covered %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :years_experience %>
+          <%= f.number_field :years_experience %>
+        </div>
+      </div>
+
+      <hr>
+
+      <!-- MISSION SECTION -->
+      <h3>Mission Section</h3>
+
+      <div class="form-group">
+        <%= f.label :mission_title %>
+        <%= f.text_field :mission_title %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :mission_description %>
+        <%= f.text_area :mission_description, rows: 5 %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :mission_image %>
+        <%= f.file_field :mission_image %>
+
+        <% if @about.mission_image.attached? %>
+          <br>
+          <%= image_tag @about.mission_image, width: 200 %>
+        <% end %>
+      </div>
+
+      <hr>
+
+      <!-- VISION SECTION -->
+      <h3>Vision Section</h3>
+
+      <div class="form-group">
+        <%= f.label :vision_title %>
+        <%= f.text_field :vision_title %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :vision_description %>
+        <%= f.text_area :vision_description, rows: 5 %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :vision_image %>
+        <%= f.file_field :vision_image %>
+
+        <% if @about.vision_image.attached? %>
+          <br>
+          <%= image_tag @about.vision_image, width: 200 %>
+        <% end %>
+      </div>
+
+      <hr>
+
+      <!-- VALUES SECTION -->
+      <h3>Values Section</h3>
+
+      <div class="form-group">
+        <%= f.label :values_offer, "What We Offer" %>
+        <%= f.text_area :values_offer, rows: 5 %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :offer_image, "Offer Image" %>
+        <%= f.file_field :offer_image %>
+
+        <% if @about.offer_image.attached? %>
+          <br>
+          <%= image_tag @about.offer_image, width: 200 %>
+        <% end %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :values_why, "Why Choose Us" %>
+        <%= f.text_area :values_why, rows: 5 %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :why_choose_image, "Why Choose Us Image" %>
+        <%= f.file_field :why_choose_image %>
+
+        <% if @about.why_choose_image.attached? %>
+          <br>
+          <%= image_tag @about.why_choose_image, width: 200 %>
+        <% end %>
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="form-actions">
+        <%= f.submit "Update About Page", class: "btn-primary" %>
+      </div>
+
+    <% end %>
+
+  </div>
+</div>

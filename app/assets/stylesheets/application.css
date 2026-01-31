@@ -1,0 +1,126 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  background: #ffffff;
+}
+
+/* Responsive Images */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Responsive Typography */
+h1, h2, h3, h4, h5, h6 {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+p {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Responsive Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+@media (max-width: 768px) {
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Responsive Forms */
+input, textarea, select, button {
+  font-size: 16px; /* Prevents zoom on iOS */
+}
+
+@media (max-width: 480px) {
+  input, textarea, select, button {
+    font-size: 16px;
+  }
+}
+
+/* Touch-friendly tap targets */
+@media (max-width: 768px) {
+  a, button, input[type="submit"], input[type="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+
+.alert {
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.alert-success {
+  background-color: #d1e7dd;
+  color: #0f5132;
+  border: 1px solid #badbcc;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #842029;
+  border: 1px solid #f5c2c7;
+}
+
+/* ===============================
+   Select2 – Select Features Style
+   =============================== */
+
+.select2-container--default .select2-selection--multiple {
+  min-height: 44px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #f2f2f2;
+  display: flex;
+  align-items: center;
+}
+
+.select2-container--default.select2-container--focus
+.select2-selection--multiple {
+  border-color: #505081;
+  box-shadow: 0 10px 30px rgba(80, 80, 129, 0.08);
+}
+
+.select2-container--default
+.select2-selection--multiple
+.select2-selection__choice {
+  background-color: #505081;
+  border: none;
+  color: #fff;
+  border-radius: 14px;
+  padding: 4px 10px;
+  font-size: 13px;
+}
+
+.select2-selection__rendered {
+  padding: 0;
+}

@@ -1,0 +1,12 @@
+<% content_for :title, "Editing property type" %>
+
+<h1>Editing property type</h1>
+
+<%= render "form", property_type: @property_type %>
+
+<br>
+
+<div>
+  <%= link_to "Show this property type", @property_type %> |
+  <%= link_to "Back to property types", property_types_path %>
+</div>

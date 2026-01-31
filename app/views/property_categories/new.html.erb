@@ -1,0 +1,11 @@
+<% content_for :title, "New property category" %>
+
+<h1>New property category</h1>
+
+<%= render "form", property_category: @property_category %>
+
+<br>
+
+<div>
+  <%= link_to "Back to property categories", property_categories_path %>
+</div>

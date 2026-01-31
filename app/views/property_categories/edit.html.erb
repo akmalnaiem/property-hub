@@ -1,0 +1,12 @@
+<% content_for :title, "Editing property category" %>
+
+<h1>Editing property category</h1>
+
+<%= render "form", property_category: @property_category %>
+
+<br>
+
+<div>
+  <%= link_to "Show this property category", @property_category %> |
+  <%= link_to "Back to property categories", property_categories_path %>
+</div>
