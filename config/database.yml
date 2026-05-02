@@ -15,11 +15,7 @@ test:
   database: property_hub_test
 
 production:
-  primary: &primary_production
-    <<: *default
-    database: property_hub_production
-    username: property_hub
-    password: <%= ENV["PROPERTY_HUB_DATABASE_PASSWORD"] %>
+  url: <%= ENV["DATABASE_URL"] %>
 
   cache:
     <<: *primary_production
