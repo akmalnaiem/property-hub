@@ -137,9 +137,6 @@
       <% end %>
     </div>
   </div>
-</div>
-
-  </div>
 
   <% if @properties.present? %>
     <div class="property-grid">
@@ -230,21 +227,21 @@
       </div>
     <% end %>
   </div>
-<% else %>
-  <div class="empty-state animate-fade-in">
-    <div class="empty-icon">
-      <i class="fas fa-home"></i>
-    </div>
-    <h2>No Properties Available</h2>
-    <p>Check back soon for new property listings!</p>
-    <% if user_signed_in? && current_user.admin? %>
-      <%= link_to new_property_path, class: "add-property-btn empty-btn" do %>
-        <i class="fas fa-plus"></i>
-        <span>Add Your First Property</span>
+  <% else %>
+    <div class="empty-state animate-fade-in">
+      <div class="empty-icon">
+        <i class="fas fa-home"></i>
+      </div>
+      <h2>No Properties Available</h2>
+      <p>Check back soon for new property listings!</p>
+      <% if user_signed_in? && current_user.admin? %>
+        <%= link_to new_property_path, class: "add-property-btn empty-btn" do %>
+          <i class="fas fa-plus"></i>
+          <span>Add Your First Property</span>
+        <% end %>
       <% end %>
-    <% end %>
-  </div>
-<% end %>
+    </div>
+  <% end %>
 </div>
 
 <section class="featured-projects">
