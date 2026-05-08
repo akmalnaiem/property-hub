@@ -2,7 +2,7 @@ class PropertiesController < ApplicationController
   require "csv"
 
   before_action :authenticate_user!, except: [ :index, :show, :download_csv, :download_image ]
-  before_action :authorize_admin!, except: [ :index, :show, :download_csv, :download_image ]
+  before_action :require_broker!, except: [ :index, :show, :download_csv, :download_image ]
   before_action :set_property, only: [ :show, :edit, :update, :destroy ]
 
   def index
@@ -99,9 +99,7 @@ class PropertiesController < ApplicationController
     @property = Property.friendly.find(params[:id])
   end
 
-  def authorize_admin!
-    redirect_to root_path, alert: "Access denied" unless current_user.admin?
-  end
+
 
   def property_params
     params.require(:property).permit(:title, :description, :price, :area_sqft, :property_category_id, :property_type_id, :bedrooms, :bathrooms, :furnished, :published, :status, :sale_status, :image, :state, :city, :location, images: [], feature_ids: [])

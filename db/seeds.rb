@@ -10,10 +10,18 @@ users = [
     password_confirmation: "Password@123"
   },
   {
-    name: "Admin Two",
-    email: "admin2@example.com",
+    name: "Broker One",
+    email: "broker1@example.com",
     phone_number: "9876543211",
-    role: "admin",
+    role: "broker",
+    password: "Password@123",
+    password_confirmation: "Password@123"
+  },
+  {
+    name: "Broker Two",
+    email: "broker2@example.com",
+    phone_number: "9876543214",
+    role: "broker",
     password: "Password@123",
     password_confirmation: "Password@123"
   },
@@ -170,9 +178,9 @@ puts "✅ About Us seeded succssfully!"
 
 puts "✅ Seeding Properties with Features"
 
-# Users
-admin1 = User.find_by!(email: "admin1@example.com")
-admin2 = User.find_by!(email: "admin2@example.com")
+# Brokers (Owners of properties)
+broker1 = User.find_by!(email: "broker1@example.com")
+broker2 = User.find_by!(email: "broker2@example.com")
 
 # Property Categories
 residential = PropertyCategory.find_by!(name: "Residential")
@@ -210,7 +218,7 @@ properties = [
     status: "sale",
     sale_status: "available",
     published: true,
-    user: admin1,
+    user: broker1,
     property_category: residential,
     property_type: apartment
   },
@@ -228,7 +236,7 @@ properties = [
     status: "sale",
     sale_status: "available",
     published: true,
-    user: admin2,
+    user: broker2,
     property_category: residential,
     property_type: villa
   },
@@ -246,7 +254,7 @@ properties = [
     status: "sale",
     sale_status: "available",
     published: true,
-    user: admin1,
+    user: broker1,
     property_category: residential,
     property_type: penthouse
   },
@@ -264,7 +272,7 @@ properties = [
     status: "sale",
     sale_status: "available",
     published: true,
-    user: admin1,
+    user: broker1,
     property_category: residential,
     property_type: plot
   },
@@ -282,7 +290,7 @@ properties = [
     status: "rent",
     sale_status: "available",
     published: true,
-    user: admin2,
+    user: broker2,
     property_category: commercial,
     property_type: office
   },
@@ -300,7 +308,7 @@ properties = [
     status: "rent",
     sale_status: "available",
     published: true,
-    user: admin2,
+    user: broker2,
     property_category: commercial,
     property_type: showroom
   },
@@ -318,7 +326,7 @@ properties = [
     status: "rent",
     sale_status: "available",
     published: true,
-    user: admin1,
+    user: broker1,
     property_category: commercial,
     property_type: warehouse
   },
@@ -336,7 +344,7 @@ properties = [
     status: "sale",
     sale_status: "available",
     published: true,
-    user: admin1,
+    user: broker1,
     property_category: other,
     property_type: farm_house
   },
@@ -354,7 +362,7 @@ properties = [
     status: "sale",
     sale_status: "available",
     published: true,
-    user: admin2,
+    user: broker2,
     property_category: other,
     property_type: farm_land
   },
@@ -372,7 +380,7 @@ properties = [
     status: "rent",
     sale_status: "available",
     published: true,
-    user: admin1,
+    user: broker1,
     property_category: residential,
     property_type: apartment
   }
@@ -392,3 +400,4 @@ end
 
 puts "✅ Properties seeded successfully with features!"
 
+User.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?

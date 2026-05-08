@@ -63,7 +63,7 @@
   <div class="property-actions-price-section">
     <div class="property-actions">
       <div class="property-actions-group">
-        <% if user_signed_in? && current_user.admin? %>
+        <% if user_signed_in? && current_user.broker? %>
           <%= button_to "Edit", edit_property_path(@property), method: :get, class: "btn pill-btn" %>
           <%= button_to "Delete", property_path(@property),
               method: :delete,

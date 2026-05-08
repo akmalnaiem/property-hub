@@ -1,8 +1,8 @@
 class AboutsController < ApplicationController
   
-  skip_before_action :authenticate_user!
+  skip_before_action :authenticate_user!, only: [ :index, :show ]
   before_action :set_about
-  before_action :authorize_admin!, only: [ :edit, :update, :destroy ]
+  before_action :require_admin!, only: [ :edit, :update, :destroy ]
 
   def index
     @abouts = About.first
@@ -33,9 +33,7 @@ class AboutsController < ApplicationController
     @about = About.first
   end
 
-  def authorize_admin!
-    redirect_to root_path, alert: "Access denied" unless current_user.admin?
-  end
+
 
   def about_params
   params.require(:about).permit(

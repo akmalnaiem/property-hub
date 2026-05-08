@@ -1,6 +1,7 @@
 class HomeController < ApplicationController
   
-  skip_before_action :authenticate_user!
+  skip_before_action :authenticate_user!, only: [ :index, :show ]
+  before_action :require_admin!, only: [ :edit, :update ]
   before_action :set_home, only: [ :show, :edit, :update ]
 
   def index

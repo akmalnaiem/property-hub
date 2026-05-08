@@ -11,7 +11,17 @@ class Property < ApplicationRecord
   has_many_attached :images
 
   validates :title, :description, :price, :area_sqft, :bathrooms, :state, :city, :location, presence: true
+  validate :user_must_be_broker
+
   enum :status, [ :sale, :rent ]
   enum :sale_status, [ :sold, :available], default: :available
+
+  private
+
+  def user_must_be_broker
+    unless user&.broker?
+      errors.add(:user, "must be a broker to manage properties")
+    end
+  end
 end
 

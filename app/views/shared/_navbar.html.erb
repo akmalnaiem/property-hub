@@ -53,7 +53,7 @@
       <% end %>
 
       <!-- Post Property Button -->
-      <% if user_signed_in? && current_user.admin? %>
+      <% if user_signed_in? && current_user.broker? %>
         <%= link_to new_property_path, class: "rera-post-property-btn" do %>
           <span>Post Property</span>
         <% end %>

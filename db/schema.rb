@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_15_073859) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_08_193410) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -29,6 +29,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_15_073859) do
     t.text "vision_description"
     t.string "vision_title"
     t.integer "years_experience"
+  end
+
+  create_table "active_admin_comments", force: :cascade do |t|
+    t.bigint "author_id"
+    t.string "author_type"
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.string "namespace"
+    t.bigint "resource_id"
+    t.string "resource_type"
+    t.datetime "updated_at", null: false
+    t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author"
+    t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
+    t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource"
   end
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -67,7 +81,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_15_073859) do
   end
 
   create_table "blogs", force: :cascade do |t|
-    t.integer "blog_category_id", null: false
+    t.bigint "blog_category_id", null: false
     t.string "city"
     t.text "content"
     t.datetime "created_at", null: false
@@ -76,7 +90,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_15_073859) do
     t.integer "status"
     t.string "title"
     t.datetime "updated_at", null: false
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.index ["blog_category_id"], name: "index_blogs_on_blog_category_id"
     t.index ["user_id"], name: "index_blogs_on_user_id"
   end
@@ -108,9 +122,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_15_073859) do
     t.string "location"
     t.decimal "price"
     t.string "property_category"
-    t.integer "property_category_id", null: false
+    t.bigint "property_category_id", null: false
     t.integer "property_type"
-    t.integer "property_type_id"
+    t.bigint "property_type_id"
     t.boolean "published"
     t.integer "sale_status"
     t.string "slug"
@@ -118,7 +132,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_15_073859) do
     t.integer "status"
     t.string "title"
     t.datetime "updated_at", null: false
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.index ["property_category_id"], name: "index_properties_on_property_category_id"
     t.index ["property_type_id"], name: "index_properties_on_property_type_id"
     t.index ["slug"], name: "index_properties_on_slug", unique: true
@@ -133,8 +147,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_15_073859) do
 
   create_table "property_features", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.integer "feature_id", null: false
-    t.integer "property_id", null: false
+    t.bigint "feature_id", null: false
+    t.bigint "property_id", null: false
     t.datetime "updated_at", null: false
     t.index ["feature_id"], name: "index_property_features_on_feature_id"
     t.index ["property_id"], name: "index_property_features_on_property_id"
@@ -143,7 +157,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_15_073859) do
   create_table "property_types", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "name"
-    t.integer "property_category_id", null: false
+    t.bigint "property_category_id", null: false
     t.datetime "updated_at", null: false
     t.index ["property_category_id"], name: "index_property_types_on_property_category_id"
   end

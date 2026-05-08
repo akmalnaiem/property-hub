@@ -125,7 +125,7 @@
       <p class="header-subtitle">Discover handpicked properties that match your requirements</p>
     </div>
     <div class="home-actions">
-      <% if user_signed_in? && current_user.admin? %>
+      <% if user_signed_in? && current_user.broker? %>
         <%= link_to new_property_path, class: "add-property-btn" do %>
           <i class="fas fa-plus"></i>
           <span>Add Property</span>
@@ -234,7 +234,7 @@
       </div>
       <h2>No Properties Available</h2>
       <p>Check back soon for new property listings!</p>
-      <% if user_signed_in? && current_user.admin? %>
+      <% if user_signed_in? && current_user.broker? %>
         <%= link_to new_property_path, class: "add-property-btn empty-btn" do %>
           <i class="fas fa-plus"></i>
           <span>Add Your First Property</span>

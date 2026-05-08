@@ -9,8 +9,28 @@ class ApplicationController < ActionController::Base
   stale_when_importmap_changes
 
   protected
-    def configure_permitted_parameters
-      devise_parameter_sanitizer.permit(:sign_up, keys: [ :name, :phone_number, :role ])
-      devise_parameter_sanitizer.permit(:account_update, keys: [ :name, :phone_number, :role ])
+
+  def authenticate_admin_user!
+    authenticate_user!
+    unless current_user.admin?
+      redirect_to root_path, alert: "Access denied! Only admins can access the dashboard."
     end
+  end
+
+  def require_admin!
+    unless current_user&.admin?
+      redirect_to root_path, alert: "Access denied! Only admins can access this page."
+    end
+  end
+
+  def require_broker!
+    unless current_user&.broker?
+      redirect_to root_path, alert: "Access denied! Only brokers can access this page."
+    end
+  end
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [ :name, :phone_number, :role ])
+    devise_parameter_sanitizer.permit(:account_update, keys: [ :name, :phone_number, :role ])
+  end
 end

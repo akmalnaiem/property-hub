@@ -1,3 +1,8 @@
+/*
+ *= require_self
+ *= require_directory .
+ */
+
 * {
   box-sizing: border-box;
 }
