@@ -2,14 +2,6 @@ puts "Seeding Users..."
 
 users = [
   {
-    name: "Admin One",
-    email: "admin1@example.com",
-    phone_number: "9876543210",
-    role: "admin",
-    password: "Password@123",
-    password_confirmation: "Password@123"
-  },
-  {
     name: "Broker One",
     email: "broker1@example.com",
     phone_number: "9876543211",
@@ -64,14 +56,14 @@ home_page.assign_attributes(
 # Attach hero image (Active Storage)
 image_path = Rails.root.join("app/assets/images/home/real_state.jpg")
 
-if File.exist?(image_path)
+if File.exist?(image_path) && !home_page.hero_image.attached?
   home_page.hero_image.attach(
     io: File.open(image_path),
     filename: "real_state.jpg",
     content_type: "image/jpeg"
   )
 else
-  puts "⚠️ Hero image not found at #{image_path}"
+  puts "⚠️ Hero image not found or already attached"
 end
 
 home_page.save!
@@ -105,6 +97,7 @@ puts "✅ Features seeded succssfully!"
 
 
 puts "✅ Seeding Property Category"
+
 property_categories = [
   { name: "Residential" },
   { name: "Commercial" },
@@ -112,10 +105,10 @@ property_categories = [
 ]
 
 property_categories.each do |category|
-  PropertyCategory.create!(category)
+  PropertyCategory.find_or_create_by!(name: category[:name])
 end
 
-puts "✅ Property Category seeded succssfully!"
+puts "✅ Property Category seeded successfully!"
 
 
 puts "✅ Seeding Property Types"
@@ -153,10 +146,13 @@ puts "✅ Property Types seeded successfully!"
 
 
 
-puts "✅ Seeding  About Us"
+puts "✅ Seeding About Us"
 
-about = {
-  hero_title: "Find Your Perfect Property",
+about = About.find_or_initialize_by(
+  hero_title: "Find Your Perfect Property"
+)
+
+about.assign_attributes(
   hero_subtitle: "Trusted real estate solutions for buying, selling, and renting properties with ease.",
   years_experience: 12,
   cities_covered: 18,
@@ -168,11 +164,11 @@ about = {
   vision_description: "To become the most trusted real estate platform, connecting people with properties that truly feel like home.",
   values_offer: "Verified listings, expert guidance, seamless transactions, and end-to-end customer support.",
   values_why: "We believe in honesty, innovation, and long-term relationships built on trust and results."
-}
+)
 
-About.create!(about)
+about.save!
 
-puts "✅ About Us seeded succssfully!"
+puts "✅ About Us seeded successfully!"
 
 
 
@@ -400,4 +396,12 @@ end
 
 puts "✅ Properties seeded successfully with features!"
 
-User.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
+if Rails.env.production?
+  User.find_or_create_by!(email: ENV["ADMIN_EMAIL"]) do |admin|
+    admin.name = ENV["ADMIN_NAME"]
+    admin.phone_number = ENV["ADMIN_PHONE"]
+    admin.role = "admin"
+    admin.password = ENV["ADMIN_PASSWORD"]
+    admin.password_confirmation = ENV["ADMIN_PASSWORD"]
+  end
+end

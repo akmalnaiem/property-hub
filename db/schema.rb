@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_08_193410) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_16_121334) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -29,20 +29,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_08_193410) do
     t.text "vision_description"
     t.string "vision_title"
     t.integer "years_experience"
-  end
-
-  create_table "active_admin_comments", force: :cascade do |t|
-    t.bigint "author_id"
-    t.string "author_type"
-    t.text "body"
-    t.datetime "created_at", null: false
-    t.string "namespace"
-    t.bigint "resource_id"
-    t.string "resource_type"
-    t.datetime "updated_at", null: false
-    t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author"
-    t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
-    t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource"
   end
 
   create_table "active_storage_attachments", force: :cascade do |t|
