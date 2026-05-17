@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount_avo
   resources :property_types do
     collection do
       get :by_category
